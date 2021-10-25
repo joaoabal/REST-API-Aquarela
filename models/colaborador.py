@@ -1,7 +1,7 @@
 from sql_alchemy import bd
 
 class ColaboradorModel(bd.Model):
-    __tablebane__ = "public.colaboradores"
+    __tablename__ = "public.colaboradores"
 
     matricula = bd.Column(bd.String, primary_key = True)
     nome = bd.Column(bd.String)
@@ -10,6 +10,7 @@ class ColaboradorModel(bd.Model):
     codigo_cargo = bd.Column(bd.String)
     lider = bd.Column(bd.String)
     matricula_lider = bd.Column(bd.String)
+    salario = bd.Column(bd.String)
     senha = bd.Column(bd.String)
     status_colaborador = bd.Column(bd.String)
 
@@ -37,4 +38,13 @@ class ColaboradorModel(bd.Model):
             "senha" : self.senha,
             "status_colaborador" : self.status_colaborador}
 
-    # def 
+    @classmethod
+    def encontrar_colaborador(cls, matricula):
+        colaborador = cls.query.filter_by(matricula=matricula).first() # SELECT * FROM colaboradores WHERE matricula = matricula
+        if colaborador:
+            return colaborador
+        return None
+
+    def save_colaborador(self):
+        bd.session.add(self)
+        bd.session.commit()
