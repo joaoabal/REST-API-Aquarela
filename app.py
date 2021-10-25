@@ -22,6 +22,7 @@ def cria_db():
 
 api.add_resource(Colaboradores,"/colaborador")
 api.add_resource(Colaborador,"/colaborador/<string:matricula>")
+# api.add_resource(ColaboradorSenha,"/colaborador/<string:matricula>")
 
 if __name__ == "__main__":
     from sql_alchemy import bd

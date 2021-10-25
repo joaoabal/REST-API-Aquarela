@@ -48,3 +48,27 @@ class ColaboradorModel(bd.Model):
     def save_colaborador(self):
         bd.session.add(self)
         bd.session.commit()
+
+    def update_colaborador(self, nome, sobrenome, cargo, codigo_cargo, lider, matricula_lider, salario, senha, status_colaborador):
+        if not nome == None:
+            self.nome = nome
+        if not sobrenome == None:    
+            self.sobrenome = sobrenome
+        if not cargo == None:
+            self.cargo = cargo
+        if not codigo_cargo == None:    
+            self.codigo_cargo = codigo_cargo
+        if not lider == None:
+            self.lider = lider
+        if not matricula_lider == None:
+            self.matricula_lider = matricula_lider
+        if not salario == None:
+            self.salario = salario
+        if not senha == None:
+            self.senha = senha
+        if not status_colaborador == None:
+            self.status_colaborador = status_colaborador
+
+    def delete_colaborador(self):
+        bd.session.delete(self)
+        bd.session.commit()

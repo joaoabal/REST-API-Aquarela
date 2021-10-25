@@ -10,15 +10,15 @@ class Colaboradores(Resource):
 class Colaborador(Resource):
 
     argumentos = reqparse.RequestParser()
-    argumentos.add_argument("nome")
-    argumentos.add_argument("sobrenome")
-    argumentos.add_argument("cargo")
-    argumentos.add_argument("codigo_cargo")
-    argumentos.add_argument("lider")
-    argumentos.add_argument("matricula_lider")
-    argumentos.add_argument("salario")
-    argumentos.add_argument("senha")
-    argumentos.add_argument("status_colaborador")
+    argumentos.add_argument("nome", type=str, required=False)
+    argumentos.add_argument("sobrenome", type=str, required=False)
+    argumentos.add_argument("cargo", type=str, required=False)
+    argumentos.add_argument("codigo_cargo", type=str, required=False)
+    argumentos.add_argument("lider", type=str, required=False)
+    argumentos.add_argument("matricula_lider", type=str, required=False)
+    argumentos.add_argument("salario", type=str, required=False)
+    argumentos.add_argument("senha", type=str, required=False)
+    argumentos.add_argument("status_colaborador", type=str, required=False)
                 
     def get(self, matricula):
         colaborador = ColaboradorModel.encontrar_colaborador(matricula)
@@ -32,25 +32,85 @@ class Colaborador(Resource):
 
         dados = Colaborador.argumentos.parse_args()
         colaborador = ColaboradorModel(matricula, **dados)
-        colaborador.save_colaborador()
+        try:
+            colaborador.save_colaborador()
+        except:
+            return {"message" : "Erro interno tentando salvar."} , 500 # internal server error
         return colaborador.json()
 
+    def put(self, matricula):
 
-    # def put(self, matricula):
+        dados = Colaborador.argumentos.parse_args()
 
-    #     dados = Colaborador.argumentos.parse_args()
-    #     novo_colaborador = {"matricula" : matricula, **dados }
-    #     # novo_colaborador_objeto = ColaboradorModel(matricula, **dados)
-    #     # novo_colaborador = novo_colaborador_objeto.json()
+        colaborador_encontrado = ColaboradorModel.encontrar_colaborador(matricula)
+        if colaborador_encontrado:
+            colaborador_encontrado.update_colaborador(**dados)
+            try:
+                colaborador_encontrado.save_colaborador()
+            except:
+                return {"message" : "Erro interno tentando salvar."} , 500 # internal server error
+            return colaborador_encontrado.json(), 200
+        colaborador = ColaboradorModel(matricula, **dados)
+        colaborador.save_colaborador()
+        return colaborador.json(), 201 #criado!
 
-    #     colaborador = Colaborador.encontrar_colaborador2(matricula)
-    #     if colaborador:
-    #         colaborador.update(novo_colaborador)
-    #         return novo_colaborador, 200
-    #     colaboradores.append(novo_colaborador)
-    #     return novo_colaborador, 201 #criado!
+    def delete(self, matricula):
+        colaborador = ColaboradorModel.encontrar_colaborador(matricula)
+        if colaborador:
+            try:
+                colaborador.delete_colaborador()
+            except:
+                return {"message" : "Erro interno tentando deletar."} , 500 # internal server error
+            return {"message" : "Colaborador deletado."}
+        return {"message" : "Colaborador não encontrado."} , 404
 
-    # def delete(self, matricula):
-    #     global colaborador
-    #     colaborador = [colaborador for colaborador in colaboradores if colaborador["matricula"] != matricula]
-    #     return {"message" : "Colaborador deletado."}
+
+# class ColaboradorSenha(Resource):
+
+#     argumentos = reqparse.RequestParser()
+#     argumentos.add_argument("senha", type=str, required=False)
+
+                
+#     def get(self, matricula):
+#         colaborador = ColaboradorModel.encontrar_colaborador(matricula)
+#         if colaborador:
+#                 return colaborador.json()
+#         return {"message" : "Colaborador nao encontrado"}, 404
+
+#     def post(self, matricula):
+#         if ColaboradorModel.encontrar_colaborador(matricula):
+#             return {'message': 'Matricula "{}" ja existe!'.format(matricula)} , 400 # bad request!
+
+#         dados = Colaborador.argumentos.parse_args()
+#         colaborador = ColaboradorModel(matricula, **dados)
+#         try:
+#             colaborador.save_colaborador()
+#         except:
+#             return {"message" : "Erro interno tentando salvar."} , 500 # internal server error
+#         return colaborador.json()
+
+#     def put(self, matricula):
+
+#         dados = Colaborador.argumentos.parse_args()
+
+#         colaborador_encontrado = ColaboradorModel.encontrar_colaborador(matricula)
+#         if colaborador_encontrado:
+#             colaborador_encontrado.update_colaborador(**dados)
+#             try:
+#                 colaborador_encontrado.save_colaborador()
+#             except:
+#                 return {"message" : "Erro interno tentando salvar."} , 500 # internal server error
+#             return colaborador_encontrado.json(), 200
+#         colaborador = ColaboradorModel(matricula, **dados)
+#         colaborador.save_colaborador()
+#         return colaborador.json(), 201 #criado!
+
+#     def delete(self, matricula):
+#         colaborador = ColaboradorModel.encontrar_colaborador(matricula)
+#         if colaborador:
+#             try:
+#                 colaborador.delete_colaborador()
+#             except:
+#                 return {"message" : "Erro interno tentando deletar."} , 500 # internal server error
+#             return {"message" : "Colaborador deletado."}
+#         return {"message" : "Colaborador não encontrado."} , 404
