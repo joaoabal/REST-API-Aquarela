@@ -2,3 +2,4 @@ flask
 flask-restful
 Flask-SQLAlchemy
 Psycopg2
+Flask-CORS

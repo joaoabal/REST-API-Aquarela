@@ -1,0 +1,187 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:5000
+paths:
+  /colaborador:
+    get:
+      summary: Listar Colaboradores
+      description: Requisição para listar todos colaboradores.
+      operationId: listCol
+      tags:
+        - Colaboradores
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A paged array of colaboradores
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /colaborador/{matricula}:
+    get:
+      summary: Info de Colaborador Especifico
+      description: Requisição para pesquisar dados de colaborador via matricula.
+      operationId: ListColEsp
+      tags:
+        - Get Colaborador
+      parameters:
+        - name: matricula
+          in: path
+          required: true
+          description: A matricula do colaborador
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Guardar Colaborador
+      description: Requisição para guardar novo colaborador via matricula.
+      operationId: saveCol
+      tags:
+      - Post Colaborador
+      parameters:
+        - name: matricula
+          in: path
+          required: true
+          description: A matricula do colaborador
+          schema:
+            type: string
+      requestBody:
+        description: Pet to add to the store
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCol'                             
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+      - Put Colaborador
+      summary: Updated Colaborador
+      description: Requisição que pode ser usada para atualizar colaborador ou adicionar colaborador via matricula.
+      operationId: updateCol
+      # produces:
+      # - "application/xml"
+      # - "application/json"
+      parameters:
+        - name: "matricula"
+          in: "path"
+          description: "name that need to be updated"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        description: Updated user object
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCol'     
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+    delete:
+      tags:
+      - Delete Colaborador
+      summary: "Delete Colaborador"
+      description: Requisição para deletar colaborador via matricula.
+      operationId: deleteCol
+      parameters:
+        - name: matricula
+          in: "path"
+          description: Matricula a ser deletada
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+components:
+  schemas:
+    Colaborador:
+        allOf:
+        - $ref: '#/components/schemas/NewCol'
+        type: object
+        required:
+          - matricula
+        properties:
+          matricula:
+            type: string
+    NewCol:
+      type: object
+      properties:        
+        nome:
+          type: string
+        sobrenome:
+          type: string
+        cargo:
+          type: string
+        codigo_cargo:
+          type: string
+        lider:
+          type: string
+        matricula_lider:
+          type: string
+        salario:
+          type: string
+        senha:
+          type: string
+        status_colaborador:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
