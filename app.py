@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Oct 24 18:26:00 2021
-
+Desafio Backend Aquarela
 @author: João Abal
+25/10/2021
 """
 
 from flask import Flask
@@ -10,7 +10,6 @@ from flask_restful import Api
 from flask_cors import CORS
 from resources.colaborador import Colaboradores
 from resources.colaborador import Colaborador
-
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5001/dbteste"
@@ -27,5 +26,5 @@ api.add_resource(Colaborador,"/colaborador/<string:matricula>")
 
 if __name__ == "__main__":
     from sql_alchemy import bd
-    bd.init_app(app) #garante que o banco seja executado somente por esse arquivo
+    bd.init_app(app)
     app.run(debug=True)

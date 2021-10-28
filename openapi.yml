@@ -1,9 +1,7 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Swagger Petstore
-  license:
-    name: MIT
+  title: Swagger - Desafio Backend Aquarela
 servers:
   - url: http://localhost:5000
 paths:
@@ -17,25 +15,20 @@ paths:
       parameters:
         - name: limit
           in: query
-          description: How many items to return at one time (max 100)
+          description: Quantidade de itens a retornar
           required: false
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: A paged array of colaboradores
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
+          description: Colaboradores encontrados
           content:
             application/json:    
               schema:
                 $ref: "#/components/schemas/Colaborador"
-        default:
-          description: unexpected error
+        '500':
+          description: Colaboradores nao encontrados (Erro interno servidor)
           content:
             application/json:
               schema:
@@ -46,23 +39,23 @@ paths:
       description: Requisição para pesquisar dados de colaborador via matricula.
       operationId: ListColEsp
       tags:
-        - Get Colaborador
+        - Colaborador
       parameters:
         - name: matricula
           in: path
           required: true
-          description: A matricula do colaborador
+          description: Entre com a matricula do colaborador
           schema:
             type: string
       responses:
         '200':
-          description: Expected response to a valid request
+          description: Colaborador encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Colaborador"
-        default:
-          description: unexpected error
+        '404':
+          description: Colaborador nao encontrado
           content:
             application/json:
               schema:
@@ -72,88 +65,123 @@ paths:
       description: Requisição para guardar novo colaborador via matricula.
       operationId: saveCol
       tags:
-      - Post Colaborador
+      - Colaborador
       parameters:
         - name: matricula
           in: path
           required: true
-          description: A matricula do colaborador
+          description: Entre com a matricula do colaborador a ser adicionado
           schema:
             type: string
       requestBody:
-        description: Pet to add to the store
+        description: Entre com as infos do colaborador a ser adicionado
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewCol'                             
+              $ref: '#/components/schemas/Info_Colaborador'                             
       responses:
         '201':
-          description: Null response
-        default:
-          description: unexpected error
+          description: Colaborador adicionado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        '400':
+          description: Colaborador ja existe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: Erro interno tentando salvar.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
     put:
       tags:
-      - Put Colaborador
+      - Colaborador
       summary: Updated Colaborador
       description: Requisição que pode ser usada para atualizar colaborador ou adicionar colaborador via matricula.
       operationId: updateCol
-      # produces:
-      # - "application/xml"
-      # - "application/json"
       parameters:
         - name: "matricula"
           in: "path"
-          description: "name that need to be updated"
+          description: Entre com a matricula do colaborador a ser atualizado/adicionado
           required: true
           schema:
             type: "string"
       requestBody:
-        description: Updated user object
+        description: Entre com as infos do colaborador a ser atualizado/adicionado
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewCol'     
+              $ref: '#/components/schemas/Info_Colaborador'     
       responses:
-        "400":
-          description: "Invalid user supplied"
-        "404":
-          description: "User not found"
+        '200':
+          description: Colaborador atualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        '201':
+          description: Colaborador adicionado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        "500":
+          description: Erro interno tentando salvar
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     delete:
       tags:
-      - Delete Colaborador
+      - Colaborador
       summary: "Delete Colaborador"
       description: Requisição para deletar colaborador via matricula.
       operationId: deleteCol
       parameters:
         - name: matricula
           in: "path"
-          description: Matricula a ser deletada
+          description: Entre com a matricula do colaborador a ser deletado
           required: true
           schema:
             type: "string"
       responses:
-        "400":
-          description: "Invalid username supplied"
+        "200":
+          description: Colaborador deletado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Colaborador"
+        "500":
+          description: Erro interno servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
-          description: "User not found"
+          description: Colaborador nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     Colaborador:
         allOf:
-        - $ref: '#/components/schemas/NewCol'
+        - $ref: '#/components/schemas/Info_Colaborador'
         type: object
         required:
           - matricula
         properties:
           matricula:
             type: string
-    NewCol:
+    Info_Colaborador:
       type: object
       properties:        
         nome:
@@ -177,11 +205,11 @@ components:
     Error:
       type: object
       required:
-        - code
-        - message
+        - mensage
+        - codigo
       properties:
+        message:
+          type: string
         code:
           type: integer
           format: int32
-        message:
-          type: string
