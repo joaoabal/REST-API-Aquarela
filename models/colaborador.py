@@ -1,15 +1,59 @@
 from sql_alchemy import bd
 
 class ColaboradorModel(bd.Model):
-    '''Classe Modelo que recebe o banco de dados e organiza a manipulação dos dados.
+    '''Classe modelo que recebe o banco de dados e constroi os atributos a partir da requisição
     
-    Classe com os seguintes métodos de classe:
-    - encontrar_colaborador(cls, matricula)
-    Classe com os seguintes métodos:
-    - salvar_colaborador(self)
-    - atualizar_colaborador(self, nome, sobrenome, cargo, codigo_cargo, lider, matricula_lider, salario, senha, status_colaborador)
-    - deletar_colaborador(self)
-    - json(self)
+    Atributos
+    ----------
+    __tablename__ : str
+        nome da tabela no banco de dados
+        Atributo do banco
+    matricula : str
+        matricula (Primary Key) do colaborador
+        Atributo do banco e do construtor
+    nome : str, opcional
+        nome do colaborador
+        Atributo do banco e do construtor
+    sobrenome : str, opcional
+        sobrenome do colaborador
+        Atributo do banco e do construtor
+    cargo : str, opcional
+        cargo do colaborador
+        Atributo do banco e do construtor
+    codigo_cargo : str, opcional
+        codigo_cargo do colaborador
+        Atributo do banco e do construtor
+    lider : str, opcional
+        lider do colaborador
+        Atributo do banco e do construtor
+    matricula_lider : str, opcional
+        matricula_lider do colaborador
+        Atributo do banco e do construtor
+    salario : str, opcional
+        salario do colaborador
+        Atributo do banco e do construtor
+    senha : str, opcional
+        senha do colaborador
+        Atributo do banco e do construtor
+    status_colaborador : str, opcional
+        status_colaborador do colaborador
+        Atributo do banco e do construtor
+
+    Métodos
+    -------
+    salvar_colaborador()
+        método que salva o colaborador no banco de dados
+    atualizar_colaborador(nome, sobrenome, cargo, codigo_cargo, lider, matricula_lider, salario, senha, status_colaborador)
+        método que atualiza o construtor da classe com os novos dados do colaborador sem apagar os dados atuais que não foram atualizados nessa requisição
+    deletar_colaborador()
+        método que deleta o colaborador do banco de dados
+    json()
+        método que recebe o objeto da classe e retorna em dicionário (que é convertido automaticamente para json)
+
+    Métodos de Classe
+    -------
+    encontrar_colaborador(matricula)
+        filtra o banco de acordo com a matricula de entrada para saber se a matricula já existe
     '''
     __tablename__ = "public.colaboradores"
 
@@ -25,6 +69,8 @@ class ColaboradorModel(bd.Model):
     status_colaborador = bd.Column(bd.String)
 
     def __init__(self, matricula, nome, sobrenome, cargo, codigo_cargo, lider, matricula_lider, salario, senha, status_colaborador):
+        '''Construtor de atributos a partir da requisição da classe modelo'''
+
         self.matricula = matricula
         self.nome = nome
         self.sobrenome = sobrenome
@@ -41,8 +87,18 @@ class ColaboradorModel(bd.Model):
         '''
         Método de classe que filtra o banco de acordo com a matricula de entrada para saber se a matricula já existe
 
-        Se a matricula não existe, a função retorna None
-        Se a matricula já existe, a função retorna o objeto colaborador
+        Atributos
+        ----------
+        cls
+            a propria classe a ser filtrada pela matricula
+        matricula : str
+            parametro de entrada da requisição (Primary Key)
+
+        Retorno
+        ----------  
+        objeto
+            o retorno é o objeto colaborador se a matrícula já existe
+        None              
         '''   
         colaborador = cls.query.filter_by(matricula=matricula).first() # SELECT * FROM colaboradores WHERE matricula = matricula
         if colaborador:
@@ -55,7 +111,7 @@ class ColaboradorModel(bd.Model):
         bd.session.commit()
 
     def atualizar_colaborador(self, nome, sobrenome, cargo, codigo_cargo, lider, matricula_lider, salario, senha, status_colaborador):
-        '''Método que atualiza os dados do colaborador sem apagar os dados atuais que não foram atualizados nessa requisição'''   
+        '''Método que atualiza o construtor da classe com os novos dados do colaborador sem apagar os dados atuais que não foram atualizados nessa requisição'''   
         if not nome == None:
             self.nome = nome
         if not sobrenome == None:    
@@ -81,7 +137,13 @@ class ColaboradorModel(bd.Model):
         bd.session.commit()
 
     def json(self):
-        '''Método que organiza os dados de entrada em formato JSON'''
+        '''Método que organiza os dados de entrada em formato JSON
+
+        Retorno
+        ----------
+        Dict
+            dicionário que é convertido automaticamente para JSON        
+        '''
         return {"matricula" : self.matricula,
             "nome" : self.nome,
             "sobrenome" : self.sobrenome,

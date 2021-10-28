@@ -2,7 +2,13 @@ from flask_restful import Resource, reqparse
 from models.colaborador import ColaboradorModel
 
 class Colaboradores(Resource):
-    '''Classe Resource (/colaborador) com método get'''
+    '''Classe Recurso (/colaborador) com método get
+
+    Métodos
+    -------
+    get()
+        retorna todos os colaboradores salvos no banco de dados.
+    '''
     def get(self):
         '''Método get da Classe Resource (/colaborador) que retorna todos os colaboradores salvos no banco de dados'''
         try:
@@ -11,13 +17,45 @@ class Colaboradores(Resource):
             return {"mensagem" : "Colaboradores nao encontrados.", "codigo" : 500} , 500 
 
 class Colaborador(Resource):
-    '''Classe Resource (/colaborador/<string:matricula>) que organiza API através da matrícula (Primary Key)
-    
-    Classe com os seguintes métodos:
-    - get(self, matricula)
-    - post(self, matricula)
-    - put(self, matricula)
-    - delete(self, matricula)
+    '''Classe Recurso (/colaborador/<string:matricula>) que organiza API através da matrícula (Primary Key)
+
+    Atributos
+    ----------
+    argumentos : objeto reqparse
+        objeto que recebe os elementos da requisição
+    argumentos.parse_args() : dict
+        construtor com chave e valor de todos elementos da requisição
+    matricula : str
+        matricula (Primary Key) do colaborador
+    nome : str, opcional
+        nome do colaborador
+    sobrenome : str, opcional
+        sobrenome do colaborador
+    cargo : str, opcional
+        cargo do colaborador
+    codigo_cargo : str, opcional
+        codigo_cargo do colaborador
+    lider : str, opcional
+        lider do colaborador
+    matricula_lider : str, opcional
+        matricula_lider do colaborador
+    salario : str, opcional
+        salario do colaborador
+    senha : str, opcional
+        senha do colaborador
+    status_colaborador : str, opcional
+        status_colaborador do colaborador
+
+    Métodos
+    -------
+    get(matricula)
+        retorna o colaborador correspondente a matrícula de entrada.
+    post(matricula)
+        salva o colaborador correspondente a matrícula de entrada.
+    put(matricula)
+        atualza o colaborador ou salva novo colaborador correspondente a matrícula de entrada.
+    delete(matricula)
+        deleta o colaborador correspondente a matrícula de entrada.
     '''
     argumentos = reqparse.RequestParser()
     argumentos.add_argument("nome", type=str, required=False)
@@ -31,14 +69,14 @@ class Colaborador(Resource):
     argumentos.add_argument("status_colaborador", type=str, required=False)
                 
     def get(self, matricula):
-        '''Método get da Classe Resource (/colaborador/<string:matricula>) que retorna o colaborador correspondente a matrícula de entrada'''
+        '''Método get da Classe Resource (/colaborador/<string:matricula>) que retorna o colaborador correspondente a matrícula de entrada '''
         colaborador = ColaboradorModel.encontrar_colaborador(matricula)
         if colaborador:
                 return colaborador.json()
         return {"mensagem" : "Colaborador nao encontrado" , "codigo" : 404}, 404
 
     def post(self, matricula):
-        '''Método post da Classe Resource (/colaborador/<string:matricula>) que salva o colaborador correspondente a matrícula de entrada'''
+        '''Método post da Classe Resource (/colaborador/<string:matricula>) que salva o colaborador correspondente a matrícula de entrada '''
         if ColaboradorModel.encontrar_colaborador(matricula):
             return {'mensagem': "Matricula {} ja existe!".format(matricula) , "codigo" : 400} , 400
 

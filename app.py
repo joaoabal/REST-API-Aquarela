@@ -8,8 +8,7 @@ Desafio Backend Aquarela
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-from resources.colaborador import Colaboradores
-from resources.colaborador import Colaborador
+from resources.colaborador import Colaboradores, Colaborador
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5001/dbteste"
