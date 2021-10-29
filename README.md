@@ -66,7 +66,6 @@ As versões das bibliotecas utilizadas foram as seguintes:
 - flask_restful
 - flask_cors==3.0.10
 - flask_sqlalchemy==2.5.1
-- unittest
 - psycopg2==2.9.1
 - Python==3.8.11
 
