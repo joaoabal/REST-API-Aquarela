@@ -73,22 +73,24 @@ As versões das bibliotecas utilizadas foram as seguintes:
 ### 🎲 Rodando o Back-End (servidor)
 
 ```bash
+# Crie um banco de daos em PostgreSQL
+# A aplicação irá procurar por um banco de dados com as seguintes características:
+# -------
+# host='localhost', port="5001", database='dbteste', user='postgres', password='postgres'
+# -------
+
 # Clone este repositório
-$ git clone <https://github.com/tgmarinho/nlw1>
+$ git clone <https://github.com/joaoabal/REST-API-Aquarela.git>
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd API-AQUARELA
+$ cd REST-API-Aquarela
 
-# Vá para a pasta server
-$ cd server
-
+# Ative seu ambiente virtual
 # Instale as dependências
-$ npm install
+# Rode a aplicação
+$ python app.py
 
-# Execute a aplicação em modo de desenvolvimento
-$ npm run dev:server
-
-# O servidor inciará na porta:3333 - acesse <http://localhost:3333>
+# O servidor inciará na porta:5000 - acesse <http://localhost:5000/colaborador>
 ```
 
 ### Tecnologias
