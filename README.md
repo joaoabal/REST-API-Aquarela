@@ -62,13 +62,13 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/).
 
 As versões das bibliotecas utilizadas foram as seguintes:
-- flask=="1.1.2"
+- flask==1.1.2
 - flask_restful
-- flask_cors=="3.0.10"
-- flask_sqlalchemy=="2.5.1"
+- flask_cors==3.0.10
+- flask_sqlalchemy==2.5.1
 - unittest
-- psycopg2=="2.9.1"
-- Python=="3.8.11"
+- psycopg2==2.9.1
+- Python==3.8.11
 
 ### 🎲 Rodando o Back-End (servidor)
 
