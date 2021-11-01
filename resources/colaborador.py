@@ -101,7 +101,6 @@ class Colaborador(Resource):
         self.argumentos.replace_argument("sobrenome", type=str, required=False)
         dados = Colaborador.argumentos.parse_args()
 
-
         colaborador_encontrado = ColaboradorModel.encontrar_colaborador(matricula)
         if colaborador_encontrado:
             colaborador_encontrado.atualizar_colaborador(**dados)

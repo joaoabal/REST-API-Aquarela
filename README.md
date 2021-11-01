@@ -107,5 +107,5 @@ As seguintes ferramentas foram utilizadas na construção do projeto:
 
 ### Autor
 
-João Pedro Kleinbung Abal
+João Pedro Kleinbung Abal - 
 Engenheiro físico e Mestre em Física pela Universidade Federal do Rio Grande do Sul (UFRGS).
