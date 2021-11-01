@@ -11,10 +11,10 @@ class ColaboradorModel(bd.Model):
     matricula : str
         matricula (Primary Key) do colaborador
         Atributo do banco e do construtor
-    nome : str, opcional
+    nome : str, requerido
         nome do colaborador
         Atributo do banco e do construtor
-    sobrenome : str, opcional
+    sobrenome : str, requerido
         sobrenome do colaborador
         Atributo do banco e do construtor
     cargo : str, opcional

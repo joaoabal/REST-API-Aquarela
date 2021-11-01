@@ -83,7 +83,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Info_Colaborador'                             
       responses:
-        '201':
+        '200':
           description: Colaborador adicionado
           content:
             application/json:
@@ -91,6 +91,12 @@ paths:
                 $ref: "#/components/schemas/Colaborador"
         '400':
           description: Colaborador ja existe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: Nome/Sobrenome incompletos.
           content:
             application/json:
               schema:
@@ -185,11 +191,14 @@ components:
             type: string
     Info_Colaborador:
       type: object
-      properties:        
+      required:
+        - nome
+        - sobrenome
+      properties: 
         nome:
           type: string
         sobrenome:
-          type: string
+          type: string       
         cargo:
           type: string
         codigo_cargo:

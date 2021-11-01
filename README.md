@@ -39,6 +39,10 @@ A API utiliza do número de matrícula como chave primária e exclusiva de cada 
 Cada colaborador pode conter as seguintes informações além da própria matrícula:
 Nome, Sobrenome, Cargo, Código do Cargo, Líder, Matrícula do Líder, Salaŕio, Senha, Status do Colaborador.
 
+Matrícula, Nome e Sobrenome são as chaves requeridas para se completar o registro inicial do colaborador. As demais são consideradas opcionais.
+
+Matrícula é a única chave requerida para se atualizar as informações do colaborador.
+
 #### Atributos
 
 - [x] Open API (Swagger)
